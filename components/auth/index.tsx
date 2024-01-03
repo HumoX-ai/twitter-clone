@@ -2,19 +2,22 @@
 
 import Image from "next/image";
 import React, { useCallback } from "react";
-
+import { signIn, useSession } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { Button } from "../ui/button";
 import useRegisterModal from "@/hooks/useRegister";
 import RegisterModal from "./modals/register-modal";
-import Link from "next/link";
 import useLoginModal from "@/hooks/useLoginModal";
 import LoginModal from "./modals/login-modal";
 
 export default function Auth() {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+
+  const { data } = useSession();
+
+  console.log(data);
 
   const onOpenregisterModal = useCallback(() => {
     registerModal.onOpen();
@@ -45,6 +48,7 @@ export default function Auth() {
             <h2 className="font-bold text-2xl md:text-3xl mb-4">Join today.</h2>
             <div className="flex flex-col space-y-2">
               <Button
+                onClick={() => signIn("google")}
                 label={
                   <div className="flex gap-2 items-center justify-center">
                     <FcGoogle />
@@ -55,6 +59,7 @@ export default function Auth() {
                 secondary
               />
               <Button
+                onClick={() => signIn("github")}
                 label={
                   <div className="flex gap-2 items-center justify-center">
                     <AiFillGithub />
